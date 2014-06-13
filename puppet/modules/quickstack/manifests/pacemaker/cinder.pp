@@ -11,6 +11,8 @@ class quickstack::pacemaker::cinder(
   $backend_iscsi_name     = 'iscsi_backend',
   $backend_nfs            = false,
   $backend_nfs_name       = 'nfs_backend',
+  $backend_rbd            = false,
+  $backend_rbd_name       = 'rbd_backend',
 
   $multiple_backends      = false,
 
@@ -28,6 +30,14 @@ class quickstack::pacemaker::cinder(
   $eqlx_use_chap          = false,
   $eqlx_chap_login        = 'chapadmin',
   $eqlx_chap_password     = '',
+
+  $rbd_pool               = 'volumes',
+  $rbd_ceph_conf          = '/etc/ceph/ceph.conf',
+  $rbd_flatten_volume_from_snapshot
+                          = false,
+  $rbd_max_clone_depth    = '5',
+  $rbd_user               = 'cinder',
+  $rbd_secret_uuid        = '',
 
   $db_ssl                 = false,
   $db_ssl_ca              = undef,
@@ -167,6 +177,8 @@ class quickstack::pacemaker::cinder(
         backend_nfs_name       => $backend_nfs_name,
         backend_eqlx           => $backend_eqlx,
         backend_eqlx_name      => $backend_eqlx_name,
+        backend_rbd            => $backend_rbd,
+        backend_rbd_name       => $backend_rbd_name,
         multiple_backends      => $multiple_backends,
         iscsi_bind_addr        => map_params('local_bind_addr'),
         glusterfs_shares       => $glusterfs_shares,
@@ -181,6 +193,13 @@ class quickstack::pacemaker::cinder(
         eqlx_use_chap          => $eqlx_use_chap,
         eqlx_chap_login        => $eqlx_chap_login,
         eqlx_chap_password     => $eqlx_chap_password,
+        rbd_pool               => $rbd_pool,
+        rbd_ceph_conf          => $rbd_ceph_conf,
+        rbd_flatten_volume_from_snapshot
+                               => $rbd_flatten_volume_from_snapshot,
+        rbd_max_clone_depth    => $rbd_max_clone_depth,
+        rbd_user               => $rbd_user,
+        rbd_secret_uuid        => $rbd_secret_uuid,
       }
       ->
       Exec['pcs-cinder-server-set-up']

@@ -12,6 +12,8 @@ class quickstack::controller_common (
   $cinder_backend_iscsi_name     = $quickstack::params::cinder_backend_iscsi_name,
   $cinder_backend_nfs            = $quickstack::params::cinder_backend_nfs,
   $cinder_backend_nfs_name       = $quickstack::params::cinder_backend_nfs_name,
+  $cinder_backend_rbd            = $quickstack::params::cinder_backend_rbd,
+  $cinder_backend_rbd_name       = $quickstack::params::cinder_backend_rbd_name,
   $cinder_db_password            = $quickstack::params::cinder_db_password,
   $cinder_multiple_backends      = $quickstack::params::cinder_multiple_backends,
   $cinder_gluster_shares         = $quickstack::params::cinder_gluster_shares,
@@ -26,12 +28,22 @@ class quickstack::controller_common (
   $cinder_eqlx_use_chap          = $quickstack::params::cinder_eqlx_use_chap,
   $cinder_eqlx_chap_login        = $quickstack::params::cinder_eqlx_chap_login,
   $cinder_eqlx_chap_password     = $quickstack::params::cinder_eqlx_chap_password,
+  $cinder_rbd_pool               = $quickstack::params::cinder_rbd_pool,
+  $cinder_rbd_ceph_conf          = $quickstack::params::cinder_rbd_ceph_conf,
+  $cinder_rbd_flatten_volume_from_snapshot
+                                 = $quickstack::params::cinder_rbd_flatten_volume_from_snapshot,
+  $cinder_rbd_max_clone_depth    = $quickstack::params::cinder_rbd_max_clone_depth,
+  $cinder_rbd_user               = $quickstack::params::cinder_rbd_user,
+  $cinder_rbd_secret_uuid        = $quickstack::params::cinder_rbd_secret_uuid,
   $cinder_user_password          = $quickstack::params::cinder_user_password,
   $controller_admin_host         = $quickstack::params::controller_admin_host,
   $controller_priv_host          = $quickstack::params::controller_priv_host,
   $controller_pub_host           = $quickstack::params::controller_pub_host,
   $glance_db_password            = $quickstack::params::glance_db_password,
   $glance_user_password          = $quickstack::params::glance_user_password,
+  $glance_backend                = $quickstack::params::glance_backend,
+  $glance_rbd_store_user         = $quickstack::params::glance_rbd_store_user,
+  $glance_rbd_store_pool         = $quickstack::params::glance_rbd_store_pool,
   $heat_cfn                      = $quickstack::params::heat_cfn,
   $heat_cloudwatch               = $quickstack::params::heat_cloudwatch,
   $heat_db_password              = $quickstack::params::heat_db_password,
@@ -211,12 +223,18 @@ class quickstack::controller_common (
   }
 
   # TODO, replace below two stanzas with quickstack::glance
+  # TODO, openstack::glance does not support show_image_direct_url
+  # yet, will need to add that when transitioning to
+  # quickstack::glance
   class {'openstack::glance':
     db_host        => $mysql_host,
     db_ssl         => str2bool_i("$ssl"),
     db_ssl_ca      => $mysql_ca,
     user_password  => $glance_user_password,
     db_password    => $glance_db_password,
+    backend        => $glance_backend,
+    rbd_store_user => $glance_rbd_store_user,
+    rbd_store_pool => $glance_rbd_store_pool,
     require        => Class['quickstack::db::mysql'],
   }
   if $amqp_server == 'qpid' {
@@ -323,6 +341,7 @@ class quickstack::controller_common (
   # https://github.com/redhat-openstack/astapor/blob/7cf25e1022bee08b0c385ae956d4e9e4ade14a9d/puppet/modules/quickstack/manifests/cinder_controller.pp#L85
   if (!str2bool_i("$cinder_backend_gluster") and
       !str2bool_i("$cinder_backend_eqlx") and
+      !str2bool_i("$cinder_backend_rbd") and
       !str2bool_i("$cinder_backend_nfs")) {
     $cinder_backend_iscsi_with_fallback = 'true'
   } else {
@@ -337,6 +356,8 @@ class quickstack::controller_common (
     backend_iscsi_name     => $cinder_backend_iscsi_name,
     backend_nfs            => $cinder_backend_nfs,
     backend_nfs_name       => $cinder_backend_nfs_name,
+    backend_rbd            => $cinder_backend_rbd,
+    backend_rbd_name       => $cinder_backend_rbd_name,
     multiple_backends      => $cinder_multiple_backends,
     iscsi_bind_addr        => $controller_priv_host,
     glusterfs_shares       => $cinder_gluster_shares,
@@ -351,6 +372,13 @@ class quickstack::controller_common (
     eqlx_use_chap          => $cinder_eqlx_use_chap,
     eqlx_chap_login        => $cinder_eqlx_chap_login,
     eqlx_chap_password     => $cinder_eqlx_chap_password,
+    rbd_pool               => $cinder_rbd_pool,
+    rbd_ceph_conf          => $cinder_rbd_ceph_conf,
+    rbd_flatten_volume_from_snapshot
+                           => $cinder_rbd_flatten_volume_from_snapshot,
+    rbd_max_clone_depth    => $cinder_rbd_max_clone_depth,
+    rbd_user               => $cinder_rbd_user,
+    rbd_secret_uuid        => $cinder_rbd_secret_uuid,
   }
 
   class { 'quickstack::heat_controller':
