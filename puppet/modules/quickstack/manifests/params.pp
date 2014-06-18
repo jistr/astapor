@@ -36,7 +36,7 @@ class quickstack::params {
   $cinder_backend_nfs           = false
   $cinder_backend_nfs_name      = 'nfs_backend'
   $cinder_backend_eqlx          = false
-  $cinder_backend_eqlx_name     = 'eqlx_backend'
+  $cinder_backend_eqlx_name     = ['eqlx_backend']
   $cinder_multiple_backends     = false
   # Cinder gluster
   $cinder_gluster_volume        = 'cinder'
@@ -48,15 +48,15 @@ class quickstack::params {
   $cinder_nfs_shares            = [ '192.168.0.4:/cinder' ]
   $cinder_nfs_mount_options     = ''
   # Cinder Dell EqualLogic
-  $cinder_san_ip                = '192.168.124.11'
-  $cinder_san_login             = 'grpadmin'
-  $cinder_san_password          = 'CHANGEME'
-  $cinder_san_thin_provision    = false
-  $cinder_eqlx_group_name       = 'group-0'
-  $cinder_eqlx_pool             = 'default'
-  $cinder_eqlx_use_chap         = false
-  $cinder_eqlx_chap_login       = 'chapadmin'
-  $cinder_eqlx_chap_password    = 'CHANGEME'
+  $cinder_san_ip                = ['192.168.124.11']
+  $cinder_san_login             = ['grpadmin']
+  $cinder_san_password          = ['CHANGEME']
+  $cinder_san_thin_provision    = [false]
+  $cinder_eqlx_group_name       = ['group-0']
+  $cinder_eqlx_pool             = ['default']
+  $cinder_eqlx_use_chap         = [false]
+  $cinder_eqlx_chap_login       = ['chapadmin']
+  $cinder_eqlx_chap_password    = ['CHANGEME']
 
   # Glance
   $glance_db_password           = 'CHANGEME'

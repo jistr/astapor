@@ -1,6 +1,6 @@
 class quickstack::cinder_volume(
   $backend_eqlx           = false,
-  $backend_eqlx_name      = 'eqlx_backend',
+  $backend_eqlx_name      = ['eqlx_backend'],
   $backend_glusterfs      = false,
   $backend_glusterfs_name = 'glusterfs_backend',
   $backend_iscsi          = false,
@@ -17,15 +17,15 @@ class quickstack::cinder_volume(
   $nfs_shares             = [],
   $nfs_mount_options      = undef,
 
-  $san_ip                 = '',
-  $san_login              = 'grpadmin',
-  $san_password           = '',
-  $san_thin_provision     = false,
-  $eqlx_group_name        = 'group-0',
-  $eqlx_pool              = 'default',
-  $eqlx_use_chap          = false,
-  $eqlx_chap_login        = 'chapadmin',
-  $eqlx_chap_password     = '',
+  $san_ip                 = [''],
+  $san_login              = ['grpadmin'],
+  $san_password           = [''],
+  $san_thin_provision     = [false],
+  $eqlx_group_name        = ['group-0'],
+  $eqlx_pool              = ['default'],
+  $eqlx_use_chap          = [false],
+  $eqlx_chap_login        = ['chapadmin'],
+  $eqlx_chap_password     = [''],
 ) {
   class { '::cinder::volume': }
 
@@ -72,15 +72,15 @@ class quickstack::cinder_volume(
       }
     } elsif str2bool_i("$backend_eqlx") {
       class { '::cinder::volume::eqlx':
-        san_ip             => $san_ip,
-        san_login          => $san_login,
-        san_password       => $san_password,
-        san_thin_provision => $san_thin_provision,
-        eqlx_group_name    => $eqlx_group_name,
-        eqlx_pool          => $eqlx_pool,
-        eqlx_use_chap      => $eqlx_use_chap,
-        eqlx_chap_login    => $eqlx_chap_login,
-        eqlx_chap_password => $eqlx_chap_password,
+        san_ip             => $san_ip[0],
+        san_login          => $san_login[0],
+        san_password       => $san_password[0],
+        san_thin_provision => $san_thin_provision[0],
+        eqlx_group_name    => $eqlx_group_name[0],
+        eqlx_pool          => $eqlx_pool[0],
+        eqlx_use_chap      => $eqlx_use_chap[0],
+        eqlx_chap_login    => $eqlx_chap_login[0],
+        eqlx_chap_password => $eqlx_chap_password[0],
       }
     } elsif str2bool_i("$backend_iscsi") {
       include ::quickstack::firewall::iscsi
@@ -144,19 +144,25 @@ class quickstack::cinder_volume(
     }
 
     if str2bool_i("$backend_eqlx") {
-      $eqlx_backends = ["eqlx"]
 
-      cinder::backend::eqlx { 'eqlx':
-        volume_backend_name => $backend_eqlx_name,
-        san_ip              => $san_ip,
-        san_login           => $san_login,
-        san_password        => $san_password,
-        san_thin_provision  => $san_thin_provision,
-        eqlx_group_name     => $eqlx_group_name,
-        eqlx_pool           => $eqlx_pool,
-        eqlx_use_chap       => $eqlx_use_chap,
-        eqlx_chap_login     => $eqlx_chap_login,
-        eqlx_chap_password  => $eqlx_chap_password,
+      $count = size($backend_eqlx_name)
+      $last = $count -1
+      $eqlx_backends = produce_array_with_prefix("eqlx",1,$count)  #Initialize with section headers
+
+      # FIXME: with newer parser we should use `each` (with index) instead
+      quickstack::eqlx::volume { $last:
+        index => $last,
+        backend_section_name_array => $eqlx_backends,
+        backend_eqlx_name_array => $backend_eqlx_name,
+        san_ip_array => $san_ip,
+        san_login_array => $san_login,
+        san_password_array => $san_password,
+        san_thin_provision_array => $san_thin_provision,
+        eqlx_group_name_array => $eqlx_group_name,
+        eqlx_pool_array => $eqlx_pool,
+        eqlx_use_chap_array => $eqlx_use_chap,
+        eqlx_chap_login_array => $eqlx_chap_login,
+        eqlx_chap_password_array => $eqlx_chap_password,
       }
     }
 
