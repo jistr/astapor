@@ -7,9 +7,12 @@ class quickstack::swift::storage (
   $swift_loopback                 = true,
   $swift_ring_server              = '192.168.203.1',  # an ip addr
   $swift_shared_secret            = '',
+  $create_basic_fw_rules          = true,
 ) inherits quickstack::params {
 
-  class {'quickstack::openstack_common': }
+  class {'quickstack::openstack_common':
+    create_basic_fw_rules => $create_basic_fw_rules,
+  }
 
   $storage_local_net_ip = find_ip("$swift_local_network",
                                   "$swift_local_interface",

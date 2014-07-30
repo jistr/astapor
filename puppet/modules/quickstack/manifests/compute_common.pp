@@ -39,9 +39,12 @@ class quickstack::compute_common (
   $rbd_secret_uuid              = '',
   $ssl                          = $quickstack::params::ssl,
   $verbose                      = $quickstack::params::verbose,
+  $create_basic_fw_rules        = true,
 ) inherits quickstack::params {
 
-  class {'quickstack::openstack_common': }
+  class {'quickstack::openstack_common':
+    create_basic_fw_rules => $create_basic_fw_rules,
+  }
 
   if str2bool_i("$cinder_backend_gluster") {
     if defined('gluster::client') {

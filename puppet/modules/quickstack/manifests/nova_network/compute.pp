@@ -45,7 +45,7 @@ class quickstack::nova_network::compute (
   $private_iface                = '',
   $private_ip                   = '',
   $private_network              = '',
-
+  $create_basic_fw_rules        = true,
 ) inherits quickstack::params {
 
   # Configure Nova
@@ -113,5 +113,6 @@ class quickstack::nova_network::compute (
     private_iface                => $private_iface,
     private_ip                   => $private_ip,
     private_network              => $private_network,
+    create_basic_fw_rules        => $create_basic_fw_rules,
   }
 }

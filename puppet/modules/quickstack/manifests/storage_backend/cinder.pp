@@ -31,9 +31,12 @@ class quickstack::storage_backend::cinder(
   $verbose                     = $quickstack::params::verbose,
   $ssl                         = $quickstack::params::ssl,
   $mysql_ca                    = $quickstack::params::mysql_ca,
+  $create_basic_fw_rules       = true,
 ) inherits quickstack::params {
 
-  class {'quickstack::openstack_common': }
+  class {'quickstack::openstack_common':
+    create_basic_fw_rules => $create_basic_fw_rules,
+  }
 
   if str2bool_i("$ssl") {
     $qpid_protocol = 'ssl'

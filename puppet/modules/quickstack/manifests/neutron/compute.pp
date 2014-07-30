@@ -46,6 +46,7 @@ class quickstack::neutron::compute (
   $private_iface                = '',
   $private_ip                   = '',
   $private_network              = '',
+  $create_basic_fw_rules        = true,
 ) inherits quickstack::params {
 
   if str2bool_i("$ssl") {
@@ -150,6 +151,7 @@ class quickstack::neutron::compute (
     private_iface                => $private_iface,
     private_ip                   => $private_ip,
     private_network              => $private_network,
+    create_basic_fw_rules        => $create_basic_fw_rules,
   }
 
   class {'quickstack::neutron::firewall::gre':}

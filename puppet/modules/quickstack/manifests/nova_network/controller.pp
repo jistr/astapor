@@ -80,6 +80,7 @@ class quickstack::nova_network::controller (
   $horizon_cert                  = $quickstack::params::horizon_cert,
   $horizon_key                   = $quickstack::params::horizon_key,
   $amqp_nssdb_password           = $quickstack::params::amqp_nssdb_password,
+  $create_basic_fw_rules         = true,
 
   $auto_assign_floating_ip
 ) inherits quickstack::params {
@@ -173,5 +174,6 @@ class quickstack::nova_network::controller (
     horizon_cert                 => $horizon_cert,
     horizon_key                  => $horizon_key,
     amqp_nssdb_password          => $amqp_nssdb_password,
+    create_basic_fw_rules        => $create_basic_fw_rules,
   }
 }

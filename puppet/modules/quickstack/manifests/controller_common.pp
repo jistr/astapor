@@ -85,9 +85,12 @@ class quickstack::controller_common (
   $horizon_cert                  = $quickstack::params::horizon_cert,
   $horizon_key                   = $quickstack::params::horizon_key,
   $amqp_nssdb_password           = $quickstack::params::amqp_nssdb_password,
+  $create_basic_fw_rules         = true,
 ) inherits quickstack::params {
 
-  class {'quickstack::openstack_common': }
+  class {'quickstack::openstack_common':
+    create_basic_fw_rules => $create_basic_fw_rules,
+  }
 
   if str2bool_i("$ssl") {
     $qpid_protocol = 'ssl'
