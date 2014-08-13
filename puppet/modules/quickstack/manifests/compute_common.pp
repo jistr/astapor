@@ -171,6 +171,7 @@ class quickstack::compute_common (
 
   include quickstack::tuned::virtual_host
 
+  Service['iptables'] ->
   firewall { '001 nova compute incoming':
     proto  => 'tcp',
     dport  => '5900-5999',

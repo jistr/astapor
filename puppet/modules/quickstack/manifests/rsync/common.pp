@@ -5,6 +5,7 @@ class quickstack::rsync::common ( ) {
     ensure => installed,
   }
 
+  Service['iptables'] ->
   firewall { '010 rsync incoming':
     proto  => 'tcp',
     dport  => ["873"],

@@ -7,6 +7,7 @@ class quickstack::firewall::nova (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 nova incoming':
     proto  => 'tcp',
     dport  => ["$api_port", "$metadata_port",

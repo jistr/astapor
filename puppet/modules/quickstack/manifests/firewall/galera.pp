@@ -8,6 +8,7 @@ class quickstack::firewall::galera (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 galera incoming':
     proto  => 'tcp',
     dport  => ["$mysql_port", "$monitor_port", "$galera_port", "$galera_ist_port", "$galera_sst_port" ],

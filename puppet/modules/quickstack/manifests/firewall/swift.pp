@@ -5,6 +5,7 @@ class quickstack::firewall::swift (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 swift incoming':
     proto  => $proto,
     dport  => $ports,

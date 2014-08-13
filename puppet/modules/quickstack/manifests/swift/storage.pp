@@ -71,6 +71,7 @@ class quickstack::swift::storage (
   # FIXME: A define should be in it's own file, as we have done in load
   # balancer.
   define add_allow_host_swift {
+      Service['iptables'] ->
       firewall { "001 swift storage and rsync incoming ${title}":
           proto  => 'tcp',
           dport  => ['6000', '6001', '6002', '873'],

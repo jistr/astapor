@@ -4,6 +4,7 @@ class quickstack::firewall::amqp(
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 amqp incoming':
     proto  => 'tcp',
     dport  => $ports,

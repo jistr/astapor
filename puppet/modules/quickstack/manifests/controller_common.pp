@@ -433,12 +433,12 @@ class quickstack::controller_common (
 
   class {'memcached':}
 
+  Service['iptables'] ->
   firewall { '001 controller incoming':
     proto    => 'tcp',
     dport    => ['80', '443', '3260', '3306', '5000', '35357', '5672', '8773', '8774', '8775', '8776', '8777', '9292', '6080'],
     action   => 'accept',
-  }
-
+  } ->
   firewall { '001 controller incoming pt2':
     proto    => 'tcp',
     dport    => ['8000', '8003', '8004'],
@@ -446,6 +446,7 @@ class quickstack::controller_common (
   }
 
   if $ssl {
+    Service['iptables'] ->
     firewall { '002 ssl controller incoming':
       proto    => 'tcp',
       dport    => ['443', '5671',],

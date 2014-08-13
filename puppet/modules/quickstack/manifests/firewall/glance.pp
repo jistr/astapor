@@ -5,6 +5,7 @@ class quickstack::firewall::glance (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 glance incoming':
     proto  => $proto,
     dport  => $ports,

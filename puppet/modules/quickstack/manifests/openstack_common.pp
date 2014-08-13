@@ -16,6 +16,7 @@ class quickstack::openstack_common(
     # and recreate the basic rules
     package { 'firewalld':
       ensure => "absent",
+      before => Service['iptables'],
     }
   }
   if (str2bool_i($create_basic_fw_rules)) {
