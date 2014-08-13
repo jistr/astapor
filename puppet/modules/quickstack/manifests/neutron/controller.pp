@@ -298,6 +298,7 @@ class quickstack::neutron::controller (
     }
   }
 
+  Service['iptables'] ->
   firewall { '001 neutron server (API)':
     proto    => 'tcp',
     dport    => ['9696'],

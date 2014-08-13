@@ -5,6 +5,7 @@ class quickstack::firewall::keystone (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 keystone incoming':
     proto  => 'tcp',
     dport  => ["$public_port", "$admin_port"],

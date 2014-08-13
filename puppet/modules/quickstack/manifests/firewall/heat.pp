@@ -24,20 +24,19 @@ class quickstack::firewall::heat (
     false => 'absent',
   }
 
+  Service['iptables'] ->
   firewall { '001 heat incoming':
     proto  => 'tcp',
     dport  => ["$heat_api_port"],
     action => 'accept',
     ensure => $heat_api_ensure,
-  }
-
+  } ->
   firewall { '001 heat cfn incoming':
     proto  => 'tcp',
     dport  => ["$heat_cfn_api_port"],
     action => 'accept',
     ensure => $heat_cfn_api_ensure,
-  }
-
+  } ->
   firewall { '001 heat cloudwatch incoming':
     proto  => 'tcp',
     dport  => ["$heat_cloudwatch_api_port"],

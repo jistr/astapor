@@ -4,6 +4,7 @@ class quickstack::firewall::iscsi (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '010 iscsi incoming':
     proto  => 'tcp',
     dport  => ["$port"],

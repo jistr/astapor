@@ -3,6 +3,7 @@ class quickstack::neutron::firewall::vxlan (
 ) {
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '002 vxlan udp':
     proto  => 'udp',
     dport  => ["${port}"],

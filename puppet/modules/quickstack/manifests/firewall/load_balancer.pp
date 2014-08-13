@@ -5,6 +5,7 @@ class quickstack::firewall::load_balancer (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 load balancer incoming':
     proto  => $proto,
     dport  => $ports,

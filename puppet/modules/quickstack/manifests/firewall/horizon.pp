@@ -5,6 +5,7 @@ class quickstack::firewall::horizon (
 
   include quickstack::firewall::common
 
+  Service['iptables'] ->
   firewall { '001 apache incoming':
     proto  => 'tcp',
     dport  => ["$http_port","$ssl_port"],
