@@ -99,7 +99,7 @@ class quickstack::neutron::all (
     enabled              => str2bool_i("$enabled"),
     manage_service       => str2bool_i("$manage_service"),
   }
-  contain neutron::server
+  contain ::neutron::server
 
   if $neutron_core_plugin == 'neutron.plugins.ml2.plugin.Ml2Plugin' {
 

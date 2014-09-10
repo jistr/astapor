@@ -73,14 +73,14 @@ class quickstack::heat(
     verbose           => $verbose,
     debug             => $debug,
   }
-  contain heat
+  contain ::heat
 
   class { '::heat::api':
     bind_host      => $bind_host,
     enabled        => str2bool_i("$enabled"),
     manage_service => str2bool_i("$manage_service"),
   }
-  contain heat::api
+  contain ::heat::api
 
   class { '::heat::api_cfn':
     # Currently api_cfn module doesn't support setting these
@@ -90,14 +90,14 @@ class quickstack::heat(
     enabled           => str2bool_i("$heat_cfn_enabled"),
     manage_service    => str2bool_i("$manage_service"),
   }
-  contain heat::api_cfn
+  contain ::heat::api_cfn
 
   class { '::heat::api_cloudwatch':
     bind_host         => $bind_host,
     enabled           => str2bool_i("$heat_cloudwatch_enabled"),
     manage_service    => str2bool_i("$manage_service"),
   }
-  contain heat::api_cloudwatch
+  contain ::heat::api_cloudwatch
 
   class { '::heat::engine':
     auth_encryption_key           => $auth_encryption_key,
@@ -107,5 +107,5 @@ class quickstack::heat(
     enabled                       => str2bool_i("$heat_engine_enabled"),
     manage_service                => str2bool_i("$manage_service"),
   }
-  contain heat::engine
+  contain ::heat::engine
 }

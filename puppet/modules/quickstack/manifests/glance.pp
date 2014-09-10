@@ -73,7 +73,7 @@ class quickstack::glance (
     manage_service        => $manage_service,
     show_image_direct_url => $show_image_direct_url,
   }
-  contain glance::api
+  contain ::glance::api
 
   # Install and configure glance-registry
   class { '::glance::registry':
@@ -93,7 +93,7 @@ class quickstack::glance (
     enabled           => $enabled,
     manage_service    => $manage_service,
   }
-  contain glance::registry
+  contain ::glance::registry
 
   if $max_retries {
     glance_api_config {

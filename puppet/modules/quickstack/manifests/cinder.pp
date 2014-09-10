@@ -67,7 +67,7 @@ class quickstack::cinder(
     use_syslog      => str2bool_i("$use_syslog"),
     log_facility    => $log_facility,
   }
-  contain cinder
+  contain ::cinder
 
   class {'::cinder::api':
     keystone_password  => $user_password,

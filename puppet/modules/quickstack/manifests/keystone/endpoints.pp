@@ -237,7 +237,7 @@ class quickstack::keystone::endpoints (
       password     => $admin_password,
       admin_tenant => $admin_tenant,
     }
-    contain keystone::roles::admin
+    contain ::keystone::roles::admin
 
     # Setup the Keystone Identity Endpoint
     class { 'keystone::endpoint':
@@ -247,7 +247,7 @@ class quickstack::keystone::endpoints (
       internal_address => $internal_real,
       region           => $region,
     }
-    contain keystone::endpoint
+    contain ::keystone::endpoint
 
     # Configure Glance endpoint in Keystone
     if $glance {
@@ -259,7 +259,7 @@ class quickstack::keystone::endpoints (
         internal_address => $glance_internal_real,
         region           => $region,
       }
-      contain glance::keystone::auth
+      contain ::glance::keystone::auth
     }
 
     # Configure Nova endpoint in Keystone
@@ -272,7 +272,7 @@ class quickstack::keystone::endpoints (
         internal_address => $nova_internal_real,
         region           => $region,
       }
-      contain nova::keystone::auth
+      contain ::nova::keystone::auth
     }
 
     # Configure Cinder endpoint in Keystone
@@ -285,7 +285,7 @@ class quickstack::keystone::endpoints (
         internal_address => $cinder_internal_real,
         region           => $region,
       }
-      contain cinder::keystone::auth
+      contain ::cinder::keystone::auth
     }
 
     if $neutron {
@@ -297,7 +297,7 @@ class quickstack::keystone::endpoints (
         internal_address => $neutron_internal_real,
         region           => $region,
       }
-      contain neutron::keystone::auth
+      contain ::neutron::keystone::auth
     }
 
     if $ceilometer {
@@ -314,7 +314,7 @@ class quickstack::keystone::endpoints (
         internal_address => $ceilometer_internal_real,
         region           => $region,
       }
-      contain ceilometer::keystone::auth
+      contain ::ceilometer::keystone::auth
     }
 
     if $swift {
@@ -331,7 +331,7 @@ class quickstack::keystone::endpoints (
         internal_address => $swift_internal_real,
         region           => $region,
       }
-      contain swift::keystone::auth
+      contain ::swift::keystone::auth
     }
 
     if $heat {
@@ -348,7 +348,7 @@ class quickstack::keystone::endpoints (
         internal_address => $heat_internal_real,
         region           => $region,
       }
-      contain heat::keystone::auth
+      contain ::heat::keystone::auth
     }
 
     if $heat_cfn {
@@ -365,7 +365,7 @@ class quickstack::keystone::endpoints (
         internal_address => $heat_cfn_internal_real,
         region           => $region,
       }
-      contain heat::keystone::auth_cfn
+      contain ::heat::keystone::auth_cfn
     }
   }
 }

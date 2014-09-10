@@ -83,5 +83,5 @@ class quickstack::keystone::common (
     use_syslog     => $use_syslog,
     verbose        => $verbose,
   }
-  contain keystone
+  contain ::keystone
 }
