@@ -73,7 +73,14 @@ class quickstack::heat(
     verbose           => $verbose,
     debug             => $debug,
   }
-  contain heat
+  # FIXME(jistr): when we drop support for Puppet 3.6 syntax, use only
+  # containment with '::' (also in the rest of quickstack)
+  $clientversion_split = split($::clientversion, '\.')
+  if $clientversion_split[0] <= 3 and $clientversion_split[1] <= 6 {
+    contain heat
+  } else {
+    contain ::heat
+  }
 
   class { '::heat::api':
     bind_host      => $bind_host,
