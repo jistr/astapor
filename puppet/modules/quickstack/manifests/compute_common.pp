@@ -173,6 +173,10 @@ class quickstack::compute_common (
     verbose            => $verbose,
   }
 
+  nova_config { 'DEFAULT/control_exchange':
+    value => 'nova';
+  }
+
   if str2bool_i($kvm_capable) {
     $libvirt_type = 'kvm'
   } else {

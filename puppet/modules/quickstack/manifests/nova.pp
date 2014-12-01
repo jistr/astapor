@@ -165,6 +165,10 @@ class quickstack::nova (
       value => $default_floating_pool;
     }
 
+    nova_config { 'DEFAULT/control_exchange':
+      value => 'nova';
+    }
+
     if $max_retries {
       nova_config {
         'DEFAULT/max_retries':      value => $max_retries;
